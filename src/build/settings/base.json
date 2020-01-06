@@ -1,0 +1,6 @@
+{
+	"app_name": "vaalbara",
+	"author": "defseg",
+	"main_module": "src/main/python/main.py",
+	"version": "0.0"
+}
