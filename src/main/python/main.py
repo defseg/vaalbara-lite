@@ -4,37 +4,21 @@ from menus.indicator import Indicator
 from menus.dispatcher import Dispatcher
 from menus.xml_to_obj import parse
 import xml.etree.ElementTree as ET
+from fbs_runtime.application_context.PySide2 import ApplicationContext
+import widgets.rss
 
 def main():
+  ctx = ApplicationContext()
   widgets = get_widgets(config)
   _print_loading_msg('All widgets loaded!')
-  indicator = Indicator()
+  indicator = Indicator(ctx)
   build_dispatcher(widgets, indicator)
   indicator.set_menu(build_menu_items(widgets))
   _print_loading_msg('All menus built!')
   indicator.go()
 
 def get_widgets(config):
-  '''Try to import every subdirectory of widgets/ except those listed in config['disabled_widgets'].'''
-  # get all subdirectories of widgets/
-  # This is a little hairy, but it should work...
-  here = os.path.split(os.path.abspath(sys.argv[0]))[0]
-  widget_list = next(os.walk(os.path.join(here, 'widgets')))[1]
-  # Filter out disabled widgets
-  widget_list = [w for w in widget_list if w not in config['vaalbara'].get('disabled_widgets') and w != '__pycache__']
-  # Try to import all the widgets; skip anything that can't be imported
-  def _import_widget(w):
-    try:
-      _print_loading_msg('Loading module {}'.format(w))
-      return importlib.import_module('widgets.{}'.format(w))
-    except ImportError:
-      print('Can\'t import widget {}\n'.format(w), file=sys.stderr)
-      return None
-  # Can't have _import_widget return nothing at all, so filter out the Nones
-  widgets = [_f for _f in (_import_widget(w) for w in widget_list) if _f]
-  # Make sure each widget has a config; if one doesn't, try to load its default
-  build_widget_configs(widgets, config)
-  return widgets
+  return [widgets.rss]
 
 def build_widget_configs(widgets, config):
   for widget in widgets:

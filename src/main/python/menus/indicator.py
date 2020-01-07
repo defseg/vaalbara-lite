@@ -61,8 +61,8 @@ class QtMenu(QMenu):
             raise IndicatorError("{} isn't menu or item".format(thing))
 
 class Indicator():
-    def __init__(self):
-        self.app       = QApplication(sys.argv)
+    def __init__(self, ctx):
+        self.app       = ctx.app
         icon_graphic   = QApplication.style().standardIcon(QStyle.SP_DriveDVDIcon)
         self.icon      = SystemTrayIcon(icon_graphic)
         self.icon_menu = self.icon.menu # let's just put this here 
