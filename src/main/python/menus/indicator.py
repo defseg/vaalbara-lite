@@ -1,7 +1,7 @@
 from PySide2 import QtGui
 from PySide2.QtWidgets import QSystemTrayIcon, QMenu, QApplication, QStyle
 from .dispatcher import Dispatcher
-from .xml_to_obj import MenuItem
+from .menu import MenuItem
 import sys, signal
 
 class SystemTrayIcon(QSystemTrayIcon):
@@ -68,6 +68,7 @@ class Indicator():
         self.icon_menu = self.icon.menu # let's just put this here 
 
     def set_menu(self, menu_base):
+        print(menu_base)
         self.icon.clear_menu()
         for w in menu_base.items:
             self.icon_menu.add_widget(w)
