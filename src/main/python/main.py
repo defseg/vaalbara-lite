@@ -10,30 +10,22 @@ from menus.menu import BaseMenu, MenuItem
 
 def main():
   ctx = ApplicationContext()
-  widgets = get_widgets(config)
-  _print_loading_msg('All widgets loaded!')
+  build_config(config)
   indicator = Indicator(ctx)
-  build_dispatcher(widgets, indicator)
-  indicator.set_menu(build_menu_items(widgets))
+  build_dispatcher(indicator)
+  indicator.set_menu(build_menu_items([rss]))
   _print_loading_msg('All menus built!')
   indicator.go()
 
-def get_widgets(config):
-  return [rss]
+def build_config(config):
+  if 'rss' not in config:
+    set_default('rss', rss.default)
+    config['rss'] = load_text(rss.default)['rss']
 
-def build_widget_configs(widgets, config):
-  for widget in widgets:
-    if _name(widget) not in config:
-      if hasattr(widget, 'default'):
-        set_default(_name(widget), widget.default)
-        config[_name(widget)] = load_text(widget.default)[_name(widget)] # TODO maybe make this better
-      else:
-        set_default(_name(widget), '# No defaults given')
-
-def build_dispatcher(widgets, indicator):
+def build_dispatcher(indicator):
   defaults = {
-    'refreshall': lambda: indicator.set_menu(build_menu_items(widgets)),
-    'refresh'   : lambda w: indicator.update_widget(build_by_name(widgets, w.data['name']))
+  'refreshall': lambda x: x,
+    'refresh'   : lambda w: indicator.update_widget(build_menu_item(rss))
   }
 
   Dispatcher(defaults)
@@ -52,6 +44,7 @@ def build_menu_items(widgets) -> BaseMenu:
 def build_menu_item(widget):
   '''Call one loaded widget to get its menu, and return a Menu.'''
   res = widget.main(config.get(_name(widget)))
+  print(res)
   res.append(MenuItem('Refresh', 'refresh', {'name': _name(widget)}))
   return res
 

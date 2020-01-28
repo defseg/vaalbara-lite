@@ -22,6 +22,8 @@ class Menu:
       self.items = items
   def __repr__(self) -> str:
     return 'Menu: {}; items: {}'.format(self.text, self._items_to_string())
+  def __str__(self) -> str:
+    return 'Menu: {}; items: {}'.format(self.text, len(self.items))
   def _items_to_string(self) -> str:
     return '\n'.join(['- {}'.format(repr(item)) for item in self.items])
   def append(self, item):
@@ -33,6 +35,8 @@ class BaseMenu(Menu):
   def __init__(self, items = None):
     super().__init__('', items = items)
   def __repr__(self) -> str:
+    return 'BaseMenu; items: {}'.format(len(self.items))
+  def __str__(self) -> str:
     return 'BaseMenu; items: {}'.format(len(self.items))
 
 class MenuItem:

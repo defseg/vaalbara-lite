@@ -68,7 +68,6 @@ class Indicator():
         self.icon_menu = self.icon.menu # let's just put this here 
 
     def set_menu(self, menu_base):
-        print(menu_base)
         self.icon.clear_menu()
         for w in menu_base.items:
             self.icon_menu.add_widget(w)
