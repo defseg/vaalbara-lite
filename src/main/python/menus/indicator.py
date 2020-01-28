@@ -7,7 +7,7 @@ import sys, signal
 class SystemTrayIcon(QSystemTrayIcon):
     def __init__(self, icon, parent=None):
         QSystemTrayIcon.__init__(self, icon, parent)
-        self.menu = BaseMenu()
+        self.menu = MenuBase()
         self.setContextMenu(self.menu)
         # Set up Ctrl+C handling. 
         # Could be done differently - see https://coldfix.eu/2016/11/08/pyqt-boilerplate/#keyboardinterrupt-ctrl-c
@@ -23,7 +23,7 @@ class SystemTrayIcon(QSystemTrayIcon):
     def clear_menu(self):
         self.menu.clear()
 
-class BaseMenu(QMenu):
+class MenuBase(QMenu):
     def __init__(self):
         QMenu.__init__(self, "")
         self.widgets = {}
