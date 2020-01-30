@@ -7,7 +7,7 @@ import sys, signal
 class SystemTrayIcon(QSystemTrayIcon):
     def __init__(self, icon, parent=None):
         QSystemTrayIcon.__init__(self, icon, parent)
-        self.menu = MenuBase()
+        self.menu = BaseMenu()
         self.setContextMenu(self.menu)
         # Set up Ctrl+C handling. 
         # Could be done differently - see https://coldfix.eu/2016/11/08/pyqt-boilerplate/#keyboardinterrupt-ctrl-c
@@ -15,26 +15,22 @@ class SystemTrayIcon(QSystemTrayIcon):
         signal.signal(signal.SIGINT, signal.SIG_DFL)
 
     def add_needed_items(self):
-        refresh_option = self.menu.addAction('Refresh all')
-        refresh_option.triggered.connect(Dispatcher.get('refreshall'))
         quit_option = self.menu.addAction('Quit')
         quit_option.triggered.connect(QtGui.qApp.quit)
 
     def clear_menu(self):
         self.menu.clear()
 
-class MenuBase(QMenu):
+class BaseMenu(QMenu):
     def __init__(self):
         QMenu.__init__(self, "")
         self.widgets = {}
 
     def add_widget(self, menu):
-        assert menu.__class__.__name__ == "Menu"
         self.widgets[menu.text] = QtMenu(menu, parent=self)
         self.addMenu(self.widgets[menu.text])
 
     def refresh_widget(self, menu):
-        assert menu.__class__.__name__ == "Menu"
         self.widgets[menu.text].refresh(menu)
 
 class QtMenu(QMenu):
@@ -51,7 +47,7 @@ class QtMenu(QMenu):
             self.__add(i)
 
     def __add(self, thing):
-        if thing.__class__.__name__ == "Menu":
+        if thing.__class__.__name__ == "Menu" or thing.__class__.__name__ == "BaseMenu":
             self.addMenu(QtMenu(thing, parent=self))
         elif thing.__class__.__name__ == "MenuItem":
             menu_item = self.addAction(thing.text)
