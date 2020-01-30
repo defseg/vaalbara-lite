@@ -35,9 +35,7 @@ def build_menu():
   menu.add(rss.main(config.get('rss')).items)
   menu.append(MenuItem('Refresh', 'refresh'))
   # TODO remove the need for this
-  base = BaseMenu()
-  base.append(menu)
-  return base
+  return menu
 
 def _print_loading_msg(text):
   '''Print some loading messages if display_loading_msgs is set to true in the 
