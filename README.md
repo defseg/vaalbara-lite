@@ -1,21 +1,2 @@
-# vaalbara
-Taskbar indicator menu multitool made of widgets. Uses Python 2.7, but may at some point be ported to 3.
-
-# Requirements
-- `pytoml`
-- `PySide2`
-
-The Boston Calendar widget needs `python_dateutil` (dateutil) and `bs4` (BeautifulSoup).
-
-# Configuration
-Vaalbara's config file lives in your OS's equivalent of `~/.vaalbara/config.ini`, and uses TOML.
-
-# Writing widgets
-Widgets must be directories containing an `__init__.py` that defines `main`. This `main` function must accept a Python dictionary of configuration parameters, and must return an XML `menu` element.
-
-Eventually there might be a DTD. For now:
-- A `menu` contains text (the text to display) and `menu` or `item` elements.
-- An `item` contains text and optional attributes:
-  - An `action` attribute determines what to do on click. For now, the only implemented action is `navigate`, which opens the `item`'s `url` in a web browser.
-
-Widgets that take configuration should also define `default`, a string containing TOML.
+# vaalbara-lite
+An RSS feed reader that lives in the taskbar and can be packaged with fbs. Requires Python 3.6 because fbs does. Based on [Vaalbara](https://github.com/defseg/vaalbara), but the innards have been rewritten to take out all the non-RSS stuff. (Mostly as an exercise in working with old code.)
