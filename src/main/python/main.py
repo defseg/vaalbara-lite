@@ -1,5 +1,5 @@
 from config import config, set_default, load_text
-import importlib, os, sys
+import os, sys
 from menus.indicator import Indicator
 from menus.dispatcher import Dispatcher
 import xml.etree.ElementTree as ET
