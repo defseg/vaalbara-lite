@@ -3,8 +3,7 @@
 # - need to figure out how to do refresh
 # - should have bool in config: use user-defined names or the ones provided by the RSS feed?
 
-from urllib.request import urlopen
-import urllib.error
+import requests
 import xml.etree.ElementTree as ET
 from menus.menu import Menu, MenuItem
 
@@ -26,15 +25,18 @@ def fetch_all(feeds, menu = None):
 	return menu
 
 def read_feed(feed, feed_name):
-	'''Open a feed's URL and read the RSS.'''
 	try:
-		html = urlopen(feed).read()
-		el = ET.fromstring(html)
+		response = requests.get(feed, headers={
+			'user-agent': 'vaalbara-lite' # some feeds will 403 if a user-agent isn't defined
+			})
+		response.raise_for_status()
+		rss_xml = response.text
+		el = ET.fromstring(rss_xml)
 		feed_title = el.find('./channel/title').text
 		menu = Menu(feed_name)
 		for item in el.findall('./channel/item'):
 			add_item(item, menu)
-	except urllib.error.HTTPError as err:
+	except (requests.exceptions.RequestException, requests.HTTPError, ET.ParseError) as err:
 		menu = Menu(f'* {feed_name}') 
 		add_error_notification(str(err), menu)
 	return menu
