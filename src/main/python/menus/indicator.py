@@ -1,5 +1,6 @@
 from PySide2 import QtGui
 from PySide2.QtWidgets import QSystemTrayIcon, QMenu, QApplication, QStyle
+from PySide2.QtGui import QIcon
 from .dispatcher import Dispatcher
 from .menu import MenuItem
 import sys, signal
@@ -51,7 +52,7 @@ class MenuBase(QtMenu):
 class Indicator():
     def __init__(self, ctx):
         self.app       = ctx.app
-        icon_graphic   = QApplication.style().standardIcon(QStyle.SP_DriveDVDIcon)
+        icon_graphic   = QIcon(ctx.icon)
         self.icon      = SystemTrayIcon(icon_graphic)
         self.icon_menu = self.icon.menu # let's just put this here 
 

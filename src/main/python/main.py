@@ -3,13 +3,18 @@ import os, sys
 from menus.indicator import Indicator
 from menus.dispatcher import Dispatcher
 import xml.etree.ElementTree as ET
-from fbs_runtime.application_context.PySide2 import ApplicationContext
+from fbs_runtime.application_context.PySide2 import ApplicationContext, cached_property
 import rss
 
 from menus.menu import BaseMenu, Menu, MenuItem
 
+class AppContext(ApplicationContext):
+  @cached_property
+  def icon(self):
+    return self.get_resource('Icon.ico')
+
 def main():
-  ctx = ApplicationContext()
+  ctx = AppContext()
   build_config(config)
   indicator = Indicator(ctx)
   build_dispatcher(indicator)
