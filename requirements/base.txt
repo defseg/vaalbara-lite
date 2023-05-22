@@ -1,4 +1,4 @@
 fbs==0.8.4
 PySide2==5.14.0
 pytoml==0.1.21
-requests==2.22.0
+requests==2.31.0
